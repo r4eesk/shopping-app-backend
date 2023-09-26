@@ -57,11 +57,12 @@ public class OrderService {
 	}
 
 	@Transactional
-	public Order createNewOrder(String userId, Long cartId, Long addressId) {
+	public Order createNewOrder(String userId, Long addressId) {
 
 		Order order = new Order();
-		Cart cart = cartRepository.findById(cartId).orElse(null);
-		User user = cart.getUser();
+		User user = userRepository.findById(userId).orElse(null);
+		Cart cart = cartRepository.findByUser(user);
+		
 		if (!user.getUserId().equals(userId))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user");
 
@@ -93,7 +94,7 @@ public class OrderService {
 		order.setUser(user);
 		order.setStatus(Status.ORDER_PLACED);
 
-		cartRepository.deleteById(cartId);
+		cartRepository.deleteById(cart.getId());
 
 		orderRepository.save(order);
 

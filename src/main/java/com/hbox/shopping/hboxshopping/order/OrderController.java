@@ -18,8 +18,8 @@ public class OrderController {
 	private OrderService orderService;
 
 	@PostMapping("/new/{userId}")
-	public Order createNewOrder(@PathVariable String userId, @RequestParam Long cartId, @RequestParam Long addressId) {
-		return orderService.createNewOrder(userId, cartId, addressId);
+	public Order createNewOrder(@PathVariable String userId, @RequestParam Long addressId) {
+		return orderService.createNewOrder(userId, addressId);
 	}
 
 	@GetMapping("/get/{userId}")
