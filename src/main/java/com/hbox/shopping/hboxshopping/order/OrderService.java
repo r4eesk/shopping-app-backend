@@ -18,6 +18,7 @@ import com.hbox.shopping.hboxshopping.cart.CartService;
 import com.hbox.shopping.hboxshopping.order.Order.Status;
 import com.hbox.shopping.hboxshopping.payment.Payment;
 import com.hbox.shopping.hboxshopping.payment.PaymentRepository;
+import com.hbox.shopping.hboxshopping.payment.PaymentStatus;
 import com.hbox.shopping.hboxshopping.product.Product;
 import com.hbox.shopping.hboxshopping.product.ProductRepository;
 import com.hbox.shopping.hboxshopping.user.User;
@@ -82,6 +83,7 @@ public class OrderService {
 
 		Payment payment = new Payment();
 		payment.setAmount(cartService.getTotalValue(userId).total());
+		payment.setStatus(PaymentStatus.SUCCESS);
 		paymentRepository.save(payment);
 
 		Address address = addressRepository.findById(addressId).orElse(null);
@@ -99,6 +101,32 @@ public class OrderService {
 		orderRepository.save(order);
 
 		return order;
+	}
+	
+
+	@Transactional
+	public Order cancelOrder(Long orderId) {
+
+		Order order = orderRepository.findById(orderId).orElse(null);
+		Map<Long, Integer> products = order.getProducts();
+		
+		products.forEach((productId,quantity) -> {
+			Product product = productRepository.findById(productId).orElse(null);
+			if(product!=null) {
+				product.setQuantity(product.getQuantity()+quantity);
+				productRepository.save(product);
+			}
+		});
+		
+		Payment payment = order.getPayment();
+		payment.setStatus(PaymentStatus.REFUNDED);
+		paymentRepository.save(payment);
+		
+		order.setStatus(Status.CANCELLED);
+		orderRepository.save(order);
+		return order;
+		
+
 	}
 
 }

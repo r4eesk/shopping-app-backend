@@ -44,7 +44,7 @@ public class SecurityConfiguration {
 			requests.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll().requestMatchers("/users/register")
 					.permitAll().requestMatchers("/order/**").permitAll().requestMatchers("/users/checkUsername/**")
 					.permitAll().requestMatchers("/authenticate").permitAll().requestMatchers("/products/**")
-					.permitAll().anyRequest().permitAll();
+					.permitAll().anyRequest().authenticated();
 			// .authenticated();
 
 		});

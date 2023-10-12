@@ -13,10 +13,11 @@ public class Payment {
 		super();
 	}
 
-	public Payment(Long id, Double amount) {
+	public Payment(Long id, Double amount,PaymentStatus status) {
 		super();
 		this.id = id;
 		this.amount = amount;
+		this.status=status;
 	}
 
 	@Id
@@ -25,6 +26,7 @@ public class Payment {
 
 	private Long id;
 	private Double amount;
+	private PaymentStatus status;
 
 	public Long getId() {
 		return id;
@@ -38,7 +40,17 @@ public class Payment {
 		return amount;
 	}
 
+	public PaymentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(PaymentStatus status) {
+		this.status = status;
+	}
+
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
+	
+	
 }

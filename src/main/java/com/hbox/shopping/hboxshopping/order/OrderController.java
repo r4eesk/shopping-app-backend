@@ -21,6 +21,11 @@ public class OrderController {
 	public Order createNewOrder(@PathVariable String userId, @RequestParam Long addressId) {
 		return orderService.createNewOrder(userId, addressId);
 	}
+	
+	@PostMapping("/cancel/{orderId")
+	public Order cancelOrder(@PathVariable Long orderId) {
+		return orderService.cancelOrder(orderId);
+	}
 
 	@GetMapping("/get/{userId}")
 	public List<Order> getOrderByUser(@PathVariable String userId) {
