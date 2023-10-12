@@ -22,7 +22,7 @@ public class OrderController {
 		return orderService.createNewOrder(userId, addressId);
 	}
 	
-	@PostMapping("/cancel/{orderId")
+	@PostMapping("/cancel/{orderId}")
 	public Order cancelOrder(@PathVariable Long orderId) {
 		return orderService.cancelOrder(orderId);
 	}
