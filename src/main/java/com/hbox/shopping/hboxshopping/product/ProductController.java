@@ -23,16 +23,17 @@ public class ProductController {
 
 	@GetMapping
 	public ProductPage getAllProducts(@RequestParam(defaultValue = "0") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy) {
-		return productService.getAllProducts(pageNo, pageSize, sortBy);
+			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "true") Boolean stock) {
+		return productService.getAllProducts(pageNo, pageSize, sortBy, stock);
 
 	}
 
 	@GetMapping("/{category}")
 	public ProductPage getProductsByCategory(@RequestParam(defaultValue = "0") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, @RequestParam(defaultValue = "id") String sortBy,
-			@PathVariable Category category) {
-		return productService.getProductsByCategory(pageNo, pageSize, sortBy, category);
+			@RequestParam(defaultValue = "true") Boolean stock, @PathVariable Category category) {
+		return productService.getProductsByCategory(pageNo, pageSize, sortBy, category, stock);
 
 	}
 

@@ -9,5 +9,9 @@ import com.hbox.shopping.hboxshopping.product.Product.Category;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	Page<Product> findByCategory(Category category, Pageable pageable);
+	
+	Page<Product> findByCategoryAndQuantityGreaterThan(Category category, int quantity, Pageable pageable);
+	
+	Page<Product> findByQuantityGreaterThan(int quantity, Pageable pageable);
 
 }

@@ -36,11 +36,16 @@ public class ProductService {
 		return paging;
 	}
 
-	public ProductPage getAllProducts(Integer pageNo, Integer pageSize, String sortBy) {
+	public ProductPage getAllProducts(Integer pageNo, Integer pageSize, String sortBy, Boolean stock) {
 
 		Pageable paging = getPaging(pageNo, pageSize, sortBy);
 
-		Page<Product> pagedResult = productRepository.findAll(paging);
+		Page<Product> pagedResult;
+		if(stock) {
+			pagedResult = productRepository.findByQuantityGreaterThan(0,paging);
+		}else {
+			pagedResult = productRepository.findAll(paging);
+		}
 
 		if (pagedResult.hasContent()) {
 			return new ProductPage(pagedResult.getContent(), pagedResult.getTotalPages());
@@ -53,10 +58,15 @@ public class ProductService {
 		return productRepository.findById(id).get();
 	}
 
-	public ProductPage getProductsByCategory(Integer pageNo, Integer pageSize, String sortBy, Category category) {
+	public ProductPage getProductsByCategory(Integer pageNo, Integer pageSize, String sortBy, Category category, Boolean stock) {
 
 		Pageable paging = getPaging(pageNo, pageSize, sortBy);
-		Page<Product> pagedResult = productRepository.findByCategory(category, paging);
+		Page<Product> pagedResult;
+		if(stock) {
+			pagedResult = productRepository.findByCategoryAndQuantityGreaterThan(category,0, paging);
+		}else {
+			pagedResult = productRepository.findByCategory(category, paging);
+		}
 
 		if (pagedResult.hasContent()) {
 			return new ProductPage(pagedResult.getContent(), pagedResult.getTotalPages());
